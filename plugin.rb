@@ -20,7 +20,7 @@ module ::Unlock
   require_dependency "distributed_cache"
 
   @cache = ::DistributedCache.new("discourse-unlock")
-
+  
   def self.settings
     @cache[SETTINGS] ||= PluginStore.get(::Unlock::PLUGIN_NAME, ::Unlock::SETTINGS) || {}
   end
@@ -51,9 +51,6 @@ after_initialize do
     put  "/admin/plugins/discourse-unlock" => "admin_unlock#update", constraints: StaffConstraint.new
     post "/unlock" => "unlock#unlock"
   end
-
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
 
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
