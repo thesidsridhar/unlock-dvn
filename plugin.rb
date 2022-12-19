@@ -6,6 +6,8 @@
 
 register_asset "stylesheets/unlocked.scss"
 
+extend CustomFields::HasCustomFields
+
 module ::Unlock
   class NoAccessLocked < StandardError; end
 
@@ -52,8 +54,9 @@ after_initialize do
     post "/unlock" => "unlock#unlock"
   end
   
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
+  register_custom_field_type(::Unlock::CF_LOCK_ADDRESS, :text)
+  register_custom_field_type(::Unlock::CF_LOCK_ICON, :text)
+
   
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
