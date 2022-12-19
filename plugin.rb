@@ -29,7 +29,21 @@ module ::Unlock
   def self.clear_cache
     @cache.clear
   end
+  
+  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
+  register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
+  register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
+  register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
 
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_GROUP
+  Site.preloaded_category_custom_fields << ::Unlock::PLUGIN_NAME
+  Site.preloaded_category_custom_fields << ::Unlock::SETTINGS
+  Site.preloaded_category_custom_fields << ::Unlock::TRANSACTION
+  
   def self.is_locked?(guardian, topic)
     return false if guardian.is_admin?
     return false if topic.category&.custom_fields&.[](CF_LOCK_ADDRESS).blank?
@@ -48,24 +62,10 @@ after_initialize do
   add_admin_route "unlock.title", "discourse-unlock"
 
   Discourse::Application.routes.append do
-    get  "/admin/plugins/discourse-unlock" => "admin_unlock#index", constraints: StaffConstraint.new
-    put  "/admin/plugins/discourse-unlock" => "admin_unlock#update", constraints: StaffConstraint.new
+    get  "/admin/plugins/unlock-dvn" => "admin_unlock#index", constraints: StaffConstraint.new
+    put  "/admin/plugins/unlock-dvn" => "admin_unlock#update", constraints: StaffConstraint.new
     post "/unlock" => "unlock#unlock"
   end
-
-  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
-  register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
-  register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
-  register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
-
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_GROUP
-  Site.preloaded_category_custom_fields << ::Unlock::PLUGIN_NAME
-  Site.preloaded_category_custom_fields << ::Unlock::SETTINGS
-  Site.preloaded_category_custom_fields << ::Unlock::TRANSACTION
 
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
