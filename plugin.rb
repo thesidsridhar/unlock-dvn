@@ -53,12 +53,12 @@ after_initialize do
     post "/unlock" => "unlock#unlock"
   end
 
-  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, JSON.to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, JSON.to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, JSON.to_sym)
-  register_category_custom_field_type(::Unlock::PLUGIN_NAME, JSON.to_sym)
-  register_category_custom_field_type(::Unlock::SETTINGS, JSON.to_sym)
-  register_category_custom_field_type(::Unlock::TRANSACTION, JSON.to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
+  register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
+  register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
+  register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
 
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
