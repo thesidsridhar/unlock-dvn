@@ -29,13 +29,6 @@ module ::Unlock
   def self.clear_cache
     @cache.clear
   end
-
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_GROUP
-  Site.preloaded_category_custom_fields << ::Unlock::PLUGIN_NAME
-  Site.preloaded_category_custom_fields << ::Unlock::SETTINGS
-  Site.preloaded_category_custom_fields << ::Unlock::TRANSACTION
   
   def self.is_locked?(guardian, topic)
     return false if guardian.is_admin?
@@ -74,6 +67,9 @@ after_initialize do
     put  "/admin/plugins/unlock-dvn" => "admin_unlock#update", constraints: StaffConstraint.new
     post "/unlock" => "unlock#unlock"
   end
+  
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
 
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
