@@ -29,13 +29,6 @@ module ::Unlock
   def self.clear_cache
     @cache.clear
   end
-  
-  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
-  register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
-  register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
-  register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
 
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
@@ -56,11 +49,30 @@ after_initialize do
     "../app/controllers/unlock_controller.rb",
     "../app/controllers/admin_unlock_controller.rb",
   ].each { |path| require File.expand_path(path, __FILE__) }
+  CF_LOCK_ADDRESS ||= SiteSetting.category_custom_field_name
+  "unlock-lock" ||= SiteSetting.category_custom_field_type
+  CF_LOCK_ICON ||= SiteSetting.category_custom_field_name
+  "unlock-icon" ||= SiteSetting.category_custom_field_type
+  CF_LOCK_GROUP ||= SiteSetting.category_custom_field_name
+  "unlock-group" ||= SiteSetting.category_custom_field_type
+  PLUGIN_NAME ||= SiteSetting.category_custom_field_name
+  "unlocked" ||= SiteSetting.category_custom_field_type
+  SETTINGS ||= SiteSetting.category_custom_field_name
+  "settings" ||= SiteSetting.category_custom_field_type
+  TRANSACTION ||= SiteSetting.category_custom_field_name
+  "transaction" ||= SiteSetting.category_custom_field_type
 
   extend_content_security_policy script_src: ["https://paywall.unlock-protocol.com/static/unlock.latest.min.js"]
-
+  
+  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
+  register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
+  register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
+  register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
+  
   add_admin_route "unlock.title", "discourse-unlock"
-
+  
   Discourse::Application.routes.append do
     get  "/admin/plugins/unlock-dvn" => "admin_unlock#index", constraints: StaffConstraint.new
     put  "/admin/plugins/unlock-dvn" => "admin_unlock#update", constraints: StaffConstraint.new
