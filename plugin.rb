@@ -43,22 +43,21 @@ after_initialize do
     "../app/controllers/admin_unlock_controller.rb",
   ].each { |path| require File.expand_path(path, __FILE__) }
   
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ADDRESS)
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ICON)
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_GROUP)
-  add_preloaded_topic_list_custom_field(::Unlock::PLUGIN_NAME)
-  add_preloaded_topic_list_custom_field(::Unlock::SETTINGS)
-  add_preloaded_topic_list_custom_field(::Unlock::TRANSACTION)
+
+#   add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_GROUP)
+#   add_preloaded_topic_list_custom_field(::Unlock::PLUGIN_NAME)
+#   add_preloaded_topic_list_custom_field(::Unlock::SETTINGS)
+#   add_preloaded_topic_list_custom_field(::Unlock::TRANSACTION)
 
 
   extend_content_security_policy script_src: ["https://paywall.unlock-protocol.com/static/unlock.latest.min.js"]
   
-  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
-  register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
-  register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
-  register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
+#   register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
+#   register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
+#   register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
+#   register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
+#   register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
+#   register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
   
   add_admin_route "unlock.title", "discourse-unlock"
   
@@ -87,7 +86,10 @@ after_initialize do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present? &&
     object.custom_fields[::Unlock::CF_LOCK_ICON].present?
   end
-
+  
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ADDRESS)
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ICON)
+  
   require_dependency "topic_view"
 
   module TopicViewLockExtension
