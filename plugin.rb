@@ -49,18 +49,14 @@ after_initialize do
     "../app/controllers/unlock_controller.rb",
     "../app/controllers/admin_unlock_controller.rb",
   ].each { |path| require File.expand_path(path, __FILE__) }
-  CF_LOCK_ADDRESS ||= SiteSetting.category_custom_field_name
-  "unlock-lock" ||= SiteSetting.category_custom_field_type
-  CF_LOCK_ICON ||= SiteSetting.category_custom_field_name
-  "unlock-icon" ||= SiteSetting.category_custom_field_type
-  CF_LOCK_GROUP ||= SiteSetting.category_custom_field_name
-  "unlock-group" ||= SiteSetting.category_custom_field_type
-  PLUGIN_NAME ||= SiteSetting.category_custom_field_name
-  "unlocked" ||= SiteSetting.category_custom_field_type
-  SETTINGS ||= SiteSetting.category_custom_field_name
-  "settings" ||= SiteSetting.category_custom_field_type
-  TRANSACTION ||= SiteSetting.category_custom_field_name
-  "transaction" ||= SiteSetting.category_custom_field_type
+  
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ADDRESS)
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ICON)
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_GROUP)
+  add_preloaded_topic_list_custom_field(::Unlock::PLUGIN_NAME)
+  add_preloaded_topic_list_custom_field(::Unlock::SETTINGS)
+  add_preloaded_topic_list_custom_field(::Unlock::TRANSACTION)
+
 
   extend_content_security_policy script_src: ["https://paywall.unlock-protocol.com/static/unlock.latest.min.js"]
   
