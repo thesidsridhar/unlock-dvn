@@ -6,8 +6,6 @@
 
 register_asset "stylesheets/unlocked.scss"
 
-extend CustomFields::HasCustomFields
-
 module ::Unlock
   class NoAccessLocked < StandardError; end
 
@@ -22,7 +20,7 @@ module ::Unlock
   require_dependency "distributed_cache"
 
   @cache = ::DistributedCache.new("discourse-unlock")
-  
+
   def self.settings
     @cache[SETTINGS] ||= PluginStore.get(::Unlock::PLUGIN_NAME, ::Unlock::SETTINGS) || {}
   end
@@ -53,11 +51,10 @@ after_initialize do
     put  "/admin/plugins/discourse-unlock" => "admin_unlock#update", constraints: StaffConstraint.new
     post "/unlock" => "unlock#unlock"
   end
-  
-  register_custom_field_type(::Unlock::CF_LOCK_ADDRESS, :text)
-  register_custom_field_type(::Unlock::CF_LOCK_ICON, :text)
 
-  
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
+
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
