@@ -4,6 +4,7 @@
 # authors: camillebesse
 # url: https://github.com/camillebesse/discourse-unlock
 
+enabled_site_setting :category_custom_field_enabled
 register_asset "stylesheets/unlocked.scss"
 
 module ::Unlock
@@ -52,8 +53,19 @@ after_initialize do
     post "/unlock" => "unlock#unlock"
   end
 
+  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, JSON.to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, JSON.to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, JSON.to_sym)
+  register_category_custom_field_type(::Unlock::PLUGIN_NAME, JSON.to_sym)
+  register_category_custom_field_type(::Unlock::SETTINGS, JSON.to_sym)
+  register_category_custom_field_type(::Unlock::TRANSACTION, JSON.to_sym)
+
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_GROUP
+  Site.preloaded_category_custom_fields << ::Unlock::PLUGIN_NAME
+  Site.preloaded_category_custom_fields << ::Unlock::SETTINGS
+  Site.preloaded_category_custom_fields << ::Unlock::TRANSACTION
 
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
