@@ -59,12 +59,10 @@ after_initialize do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
 
-  add_to_serializer(:basic_category, :include_lock?) do
-    object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
-  end
-  
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ADDRESS)
-  
+#   add_to_serializer(:basic_category, :include_lock?) do
+#     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
+#   end
+
   add_to_serializer(:basic_category, :lock_icon, false) do
     object.custom_fields[::Unlock::CF_LOCK_ICON]
   end
@@ -74,8 +72,6 @@ after_initialize do
     object.custom_fields[::Unlock::CF_LOCK_ICON].present?
   end
 
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ICON)
-  
   require_dependency "topic_view"
 
   module TopicViewLockExtension
