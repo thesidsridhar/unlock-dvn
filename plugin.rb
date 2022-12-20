@@ -4,7 +4,6 @@
 # authors: camillebesse
 # url: https://github.com/camillebesse/discourse-unlock
 
-#enabled_site_setting :category_custom_field_enabled
 register_asset "stylesheets/unlocked.scss"
 
 module ::Unlock
@@ -29,7 +28,7 @@ module ::Unlock
   def self.clear_cache
     @cache.clear
   end
-  
+
   def self.is_locked?(guardian, topic)
     return false if guardian.is_admin?
     return false if topic.category&.custom_fields&.[](CF_LOCK_ADDRESS).blank?
@@ -42,31 +41,17 @@ after_initialize do
     "../app/controllers/unlock_controller.rb",
     "../app/controllers/admin_unlock_controller.rb",
   ].each { |path| require File.expand_path(path, __FILE__) }
-  
-
-#   add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_GROUP)
-#   add_preloaded_topic_list_custom_field(::Unlock::PLUGIN_NAME)
-#   add_preloaded_topic_list_custom_field(::Unlock::SETTINGS)
-#   add_preloaded_topic_list_custom_field(::Unlock::TRANSACTION)
-
 
   extend_content_security_policy script_src: ["https://paywall.unlock-protocol.com/static/unlock.latest.min.js"]
-  
-  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
-  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
-#   register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
-#   register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
-#   register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
-  
+
   add_admin_route "unlock.title", "discourse-unlock"
-  
+
   Discourse::Application.routes.append do
-    get  "/admin/plugins/unlock-dvn" => "admin_unlock#index", constraints: StaffConstraint.new
-    put  "/admin/plugins/unlock-dvn" => "admin_unlock#update", constraints: StaffConstraint.new
+    get  "/admin/plugins/discourse-unlock" => "admin_unlock#index", constraints: StaffConstraint.new
+    put  "/admin/plugins/discourse-unlock" => "admin_unlock#update", constraints: StaffConstraint.new
     post "/unlock" => "unlock#unlock"
   end
-  
+
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
 
@@ -74,7 +59,7 @@ after_initialize do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
 
-  add_to_serializer(:basic_category, :include_lock, true) do
+  add_to_serializer(:basic_category, :include_lock?) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
   end
 
@@ -82,14 +67,11 @@ after_initialize do
     object.custom_fields[::Unlock::CF_LOCK_ICON]
   end
 
-  add_to_serializer(:basic_category, :include_lock_icon, true) do
+  add_to_serializer(:basic_category, :include_lock_icon?) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present? &&
     object.custom_fields[::Unlock::CF_LOCK_ICON].present?
   end
-  
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ADDRESS)
-  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ICON)
-  
+
   require_dependency "topic_view"
 
   module TopicViewLockExtension
