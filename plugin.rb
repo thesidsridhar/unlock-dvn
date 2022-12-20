@@ -60,7 +60,7 @@ after_initialize do
   end
 
   add_to_serializer(:basic_category, :include_lock?) do
-    object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
+    object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
 
   add_to_serializer(:basic_category, :lock_icon, false) do
