@@ -52,9 +52,9 @@ after_initialize do
 
   extend_content_security_policy script_src: ["https://paywall.unlock-protocol.com/static/unlock.latest.min.js"]
   
-#   register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
-#   register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
-#   register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ADDRESS, "unlock-lock".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_ICON, "unlock-icon".to_sym)
+  register_category_custom_field_type(::Unlock::CF_LOCK_GROUP, "unlock-group".to_sym)
 #   register_category_custom_field_type(::Unlock::PLUGIN_NAME, "unlocked".to_sym)
 #   register_category_custom_field_type(::Unlock::SETTINGS, "settings".to_sym)
 #   register_category_custom_field_type(::Unlock::TRANSACTION, "transaction".to_sym)
