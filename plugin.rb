@@ -52,9 +52,12 @@ after_initialize do
     post "/unlock" => "unlock#unlock"
   end
 
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
-  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
-
+  SiteSetting.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
+  SiteSetting.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
+  
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ADDRESS)
+  add_preloaded_topic_list_custom_field(::Unlock::CF_LOCK_ICON)
+  
   add_to_serializer(:basic_category, :lock, false) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
