@@ -56,12 +56,12 @@ after_initialize do
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
 
   add_to_serializer(:basic_category, :lock, false) do
-    object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
+    object.custom_fields.send(::Unlock::CF_LOCK_ADDRESS)
   end
 
-#   add_to_serializer(:basic_category, :include_lock?) do
-#     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
-#   end
+  add_to_serializer(:basic_category, :include_lock?) do
+    object.custom_fields.send(::Unlock::CF_LOCK_ADDRESS).present?
+  end
 
   add_to_serializer(:basic_category, :lock_icon, false) do
     object.custom_fields[::Unlock::CF_LOCK_ICON]
