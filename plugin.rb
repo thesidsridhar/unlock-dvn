@@ -4,7 +4,7 @@
 # authors: camillebesse
 # url: https://github.com/camillebesse/discourse-unlock
 
-enabled_site_setting :category_custom_field_enabled
+#enabled_site_setting :category_custom_field_enabled
 register_asset "stylesheets/unlocked.scss"
 
 module ::Unlock
