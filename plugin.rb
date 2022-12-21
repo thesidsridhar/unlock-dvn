@@ -62,7 +62,6 @@ after_initialize do
   end
 
   add_to_serializer(:basic_category, :include_lock?) do
-    add_preloaded_group_custom_field(::Unlock::CF_LOCK_ADDRESS)
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
   end
 
