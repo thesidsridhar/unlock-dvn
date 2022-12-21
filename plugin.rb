@@ -56,24 +56,24 @@ after_initialize do
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
   
   
-  add_to_serializer(:basic_category, :lock, false) do
-    add_preloaded_group_custom_field(::Unlock::CF_LOCK_ADDRESS)
+    # Preload the methods for the basic_category serializer
+  add_to_serializer(:basic_category, :lock, false, preload: true) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
 
-#   add_to_serializer(:basic_category, :include_lock?) do
-#     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
-#   end
+  add_to_serializer(:basic_category, :include_lock?, false, preload: true) do
+    object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
+  end
 
-  add_to_serializer(:basic_category, :lock_icon, false) do
-    add_preloaded_group_custom_field(::Unlock::CF_LOCK_ICON)
+  add_to_serializer(:basic_category, :lock_icon, false, preload: true) do
     object.custom_fields[::Unlock::CF_LOCK_ICON]
   end
 
-  add_to_serializer(:basic_category, :include_lock_icon?) do
+  add_to_serializer(:basic_category, :include_lock_icon?, false, preload: true) do
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present? &&
     object.custom_fields[::Unlock::CF_LOCK_ICON].present?
   end
+
 
   require_dependency "topic_view"
 
