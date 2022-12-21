@@ -52,22 +52,22 @@ after_initialize do
     post "/unlock" => "unlock#unlock"
   end
   
-  add_preloaded_group_custom_field(::Unlock::CF_LOCK_ADDRESS)
-  add_preloaded_group_custom_field(::Unlock::CF_LOCK_ICON)
-  
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
   
   
   add_to_serializer(:basic_category, :lock, false) do
+    add_preloaded_group_custom_field(::Unlock::CF_LOCK_ADDRESS)
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS]
   end
 
   add_to_serializer(:basic_category, :include_lock?) do
+    add_preloaded_group_custom_field(::Unlock::CF_LOCK_ADDRESS)
     object.custom_fields[::Unlock::CF_LOCK_ADDRESS].present?
   end
 
   add_to_serializer(:basic_category, :lock_icon, false) do
+    add_preloaded_group_custom_field(::Unlock::CF_LOCK_ICON)
     object.custom_fields[::Unlock::CF_LOCK_ICON]
   end
 
