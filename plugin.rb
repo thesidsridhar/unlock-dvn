@@ -55,8 +55,8 @@ after_initialize do
   set_preloaded_custom_fields(::Unlock::CF_LOCK_ADDRESS)
   set_preloaded_custom_fields(::Unlock::CF_LOCK_ICON)
   
-  SiteSetting.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
-  SiteSetting.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
+  Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
   
   
   add_to_serializer(:basic_category, :lock, false) do
@@ -102,6 +102,7 @@ after_initialize do
   ::ApplicationController.prepend ApplicationControllerLockExtension
 
   class ::ApplicationController
+    extend HasCustomFields
     rescue_from ::Unlock::NoAccessLocked do
       if request.format.json?
         response = { error: "Payment Required" }
