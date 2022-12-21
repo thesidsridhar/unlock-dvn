@@ -52,8 +52,8 @@ after_initialize do
     post "/unlock" => "unlock#unlock"
   end
   
-  set_preloaded_custom_fields(::Unlock::CF_LOCK_ADDRESS)
-  set_preloaded_custom_fields(::Unlock::CF_LOCK_ICON)
+  add_preloaded_group_custom_field(::Unlock::CF_LOCK_ADDRESS)
+  add_preloaded_group_custom_field(::Unlock::CF_LOCK_ICON)
   
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ADDRESS
   Site.preloaded_category_custom_fields << ::Unlock::CF_LOCK_ICON
@@ -102,7 +102,6 @@ after_initialize do
   ::ApplicationController.prepend ApplicationControllerLockExtension
 
   class ::ApplicationController
-    extend HasCustomFields
     rescue_from ::Unlock::NoAccessLocked do
       if request.format.json?
         response = { error: "Payment Required" }
